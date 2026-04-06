@@ -23,6 +23,10 @@ app.use("/api/user", userRouter)
 app.use("/api/interview" , interviewRouter)
 app.use("/api/payment" , paymentRouter)
 
+app.get("/", (req, res) => {
+    res.send("Interview-IQ API is Live! 🚀")
+})
+
 const PORT = process.env.PORT || 8000
 if (process.env.NODE_ENV !== "production") {
     app.listen(PORT, () => {
