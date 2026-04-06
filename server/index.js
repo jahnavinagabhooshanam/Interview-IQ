@@ -1,8 +1,7 @@
+import 'dotenv/config'
 import express from "express"
-import dotenv from "dotenv"
 import connectDb from "./config/connectDb.js"
 import cookieParser from "cookie-parser"
-dotenv.config()
 import cors from "cors"
 import authRouter from "./routes/auth.route.js"
 import userRouter from "./routes/user.route.js"
@@ -26,6 +25,17 @@ app.use("/api/payment" , paymentRouter)
 app.get("/", (req, res) => {
     res.send("Interview-IQ API is Live! 🚀")
 })
+
+// Global Error Handler to Prevent Vercel Crashes
+app.use((err, req, res, next) => {
+    console.error("Global Error Caught:", err.message);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+});
+
+// Avoid unhandled rejections crashing the process
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 const PORT = process.env.PORT || 8000
 if (process.env.NODE_ENV !== "production") {
